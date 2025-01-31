@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<script src="{{ url_for('static', filename='index.js') }}"></script>
+		<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='index.css') }}" />
+	</head>
+	<body>
+		<header>
+			Artist Search
+		</header>
+		<div id="main">
+			<form id="search">
+				<img id="query-search" src="{{ url_for('static', filename='search_icon.png') }}" />
+				<input type="text" id="query" placeholder="Please enter an artist name." required/>
+				<img id="query-clear" src="{{ url_for('static', filename='clear_icon.png') }}" />
+			</form>
+		</div>
+		<footer>
+			<span id="footer">Powered by <img src="{{ url_for('static', filename='artsy_logo.svg') }}" />Artsy</span>
+		</footer>
+	</body>
+</html>
