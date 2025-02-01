@@ -13,6 +13,20 @@
 				<input type="text" id="query" placeholder="Please enter an artist name." required/>
 				<img id="query-clear" src="{{ url_for('static', filename='clear_icon.png') }}" />
 			</form>
+			<div id="result-container">
+				<table id="results">
+					<tbody>
+						<tr id="result-list"></tr>
+					</tbody>
+				</table>
+			</div>
+			<img id="loading" src="{{ url_for('static', filename='loading.gif') }}" hidden />
+			<div id="no-results" hidden>No results found</div>
+			<div id="artist-detail" hidden>
+				<h3 id="artist-basic"></h3>
+				<p id="artist-nationality"></p>
+				<p id="artist-biography"></p>
+			</div>
 		</div>
 		<footer>
 			<span id="footer">Powered by <img src="{{ url_for('static', filename='artsy_logo.svg') }}" />Artsy</span>

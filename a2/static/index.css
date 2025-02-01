@@ -3,7 +3,7 @@ footer {
 	left: 0;
 	bottom: 0;
 	width: 100%;
-	padding: 5;
+	padding: 8;
 	background-color: #070726;
 	color: white;
 	text-align: center;
@@ -31,12 +31,12 @@ header {
 
 #main {
 	text-align: center;
-	margin-top: 100;
+	margin: 100 200;
 }
 
 #search {
 	margin: auto;
-	width: 700;
+	width: 600;
 	height: 50;
 	padding: 10 20;
 	border: 3px solid #6f6e6b;
@@ -68,4 +68,58 @@ header {
 
 #search:focus-within {
 	border: 3px solid #e2841a;
+}
+
+#loading {
+	width: 100;
+}
+
+#result-container {
+	overflow: auto;
+}
+
+#results {
+	margin-top: 30;
+	border-spacing: 10px;
+
+	td {
+		background-color: #205375;
+		color: white;
+		text-align: center;
+		font-size: large;
+		padding-bottom: 10;
+	}
+
+	td:hover {
+		background-color: #112B3C;
+		cursor: pointer;
+	}
+
+	td[selected] {
+		background-color: #112B3C;
+	}
+
+	img {
+		display: block;
+		width: 200;
+		border-radius: 100px;
+		border: 5px solid white;
+		margin: 10;
+	}
+}
+
+#no-results {
+	font-size: large;
+	width: 600;
+	border-radius: 25px;
+	padding: 20px;
+	background-color: #6f6e6b6b;
+}
+
+#artist-detail {
+	width: 800;
+}
+
+#artist-nationality {
+	font-size: large;
 }
