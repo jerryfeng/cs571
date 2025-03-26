@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<meta name="robots" content="noindex" />
+		<script src="static/index.js"></script>
+		<link type="text/css" rel="stylesheet" href="static/index.css" />
+		<title><%= title %></title>
+	</head>
+	<body>
+		<header>
+			<%= title %>
+		</header>
+		<div id="main">
+			<form id="search">
+				<img id="query-search" src="static/search_icon.png" />
+				<input type="text" id="query" placeholder="Please enter an artist name." required/>
+				<img id="query-clear" src="static/clear_icon.png" />
+			</form>
+			<div id="result-container">
+				<table id="results">
+					<tbody>
+						<tr id="result-list"></tr>
+					</tbody>
+				</table>
+			</div>
+			<img id="loading" src="static/loading.gif" hidden />
+			<div id="no-results" hidden>No results found</div>
+			<div id="artist-detail" hidden>
+				<h3 id="artist-basic"></h3>
+				<p id="artist-nationality"></p>
+				<p id="artist-biography"></p>
+			</div>
+		</div>
+		<footer>
+			<span id="footer">Powered by <img src="static/artsy_logo.svg" />Artsy</span>
+		</footer>
+	</body>
+</html>

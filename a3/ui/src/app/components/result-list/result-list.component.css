@@ -1,0 +1,25 @@
+.card {
+	min-width: 208px;
+	max-height: fit-content;
+}
+
+.card:hover {
+	cursor: pointer;
+	.card-body {
+		background-color: #0e9eff;
+	}
+}
+
+.card.selected {
+	.card-body {
+		background-color: #0e9eff;
+	}
+}
+
+.card-body {
+	background-color: #205375;
+	color: white;
+	max-height: fit-content;
+}
+
+
