@@ -1,0 +1,12 @@
+# this file needs to copied into the dist/browser folder before deploying
+runtime: nodejs22
+service: default
+instance_class: F1
+handlers:
+  - url: /(.+\.(css|js|html|png|jpg|svg|ico|json|txt|woff2?|ttf|eot|otf|map))$
+    static_files: \1
+    upload: (.*)
+  - url: /.*
+    static_files: index.html
+    upload: index.html
+    upload: (.*)

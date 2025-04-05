@@ -44,7 +44,7 @@ const getAuthHeader = async () => {
 	};
 };
 
-export const searchArtist = async (q) => {
+export const searchArtists = async (q) => {
 	const params = {
 		q,
 		size : 10,
@@ -62,4 +62,73 @@ export const searchArtist = async (q) => {
 	const results = await response.json();
 	
 	return results._embedded.results;
+};
+
+export const searchSimilarArtists = async (artistId) => {
+	const params = {
+		size: 10,
+		similar_to_artist_id: artistId
+	}
+
+	const response = await fetch(
+		`${API_ENDPOINT}/artists?${new URLSearchParams(params).toString()}`,
+		{ headers: await getAuthHeader() }
+	);
+
+	if (!response.ok) {
+		throw new Error(`Response status ${response.status}`);
+	}
+
+	const results = await response.json();
+
+	return results._embedded.artists;
+}
+
+export const getArtist = async (id) => {
+	const response = await fetch(
+		`${API_ENDPOINT}/artists/${id}`,
+		{ headers: await getAuthHeader() }
+	);
+
+	if (!response.ok) {
+		throw new Error(`Response status ${response.status}`);
+	}
+
+	const result = await response.json();
+	return result;
+};
+
+export const searchArtworks = async (artist_id) => {
+	const params = {
+		artist_id,
+		size : 10
+	};
+	const response = await fetch(
+		`${API_ENDPOINT}/artworks?${new URLSearchParams(params).toString()}`,
+		{ headers: await getAuthHeader() }
+	);
+
+	if (!response.ok) {
+		throw new Error(`Response status ${response.status}`);
+	}
+
+	const results = await response.json();
+	return results._embedded.artworks;
+};
+
+export const searchCategories = async (artwork_id) => {
+	const params = {
+		artwork_id
+	};
+	const response = await fetch(
+		`${API_ENDPOINT}/genes?${new URLSearchParams(params).toString()}`,
+		{ headers: await getAuthHeader() }
+	);
+
+	if (!response.ok) {
+		throw new Error(`Response status ${response.status}`);
+	}
+
+	const results = await response.json();
+	return results._embedded.genes;
 };

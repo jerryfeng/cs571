@@ -1,7 +1,22 @@
-.navbar {
-	background-color: #f0eee7;
-}
-
 .btn-primary {
 	background-color: #0e3c80;
+}
+
+.nav {
+	img {
+		max-width: 40px;
+		border-radius: 20px;
+	}
+}
+
+.dropdown-toggle {
+	cursor: pointer;
+}
+
+.dropdown-menu {
+	width: fit-content;
+}
+
+.dropdown-item {
+	cursor: pointer;
 }

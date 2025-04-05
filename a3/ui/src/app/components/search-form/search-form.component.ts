@@ -3,13 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { API_ENDPOINT } from '../../app.constants';
 import { SearchStateService } from '../../services/search-state.service';
 import { Artist } from '../../models/artist';
+import { Router, RouterLink } from '@angular/router';
 
 const MISSING_IMAGE_URL = '/assets/shared/missing_image.png';
 const MISSING_IMAGE_REPLACEMENT_URL = '/public/artsy_logo.svg';
 
 @Component({
   selector: 'app-search-form',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   template: `
     <form (ngSubmit)="searchArtist()">
       <div class="input-group">
@@ -25,10 +26,10 @@ const MISSING_IMAGE_REPLACEMENT_URL = '/public/artsy_logo.svg';
             <span class="spinner-border spinner-border-sm ms-1" aria-hidden="true"></span>
           }
         </button>
-        <button type="button" class="btn btn-secondary" (click)="clear()">Clear</button>
+        <button routerLink="/" type="button" class="btn btn-secondary" (click)="clear()">Clear</button>
       </div>
     </form>
-    @if (noResult()) {
+    @if (noResults()) {
       <div class="alert alert-danger mt-2 text-start" role="alert">
         No results.
       </div>
@@ -40,9 +41,11 @@ export class SearchFormComponent {
   searchQuery = signal<string>('');
   isDisabled = computed<boolean>(() => this.searchQuery() === '');
   isSearching = signal<boolean>(false);
-  noResult = signal<boolean>(false);
+  noResults = signal<boolean>(false);
   async searchArtist(): Promise<void> {
-    this.noResult.set(false);
+    this.router.navigateByUrl('/');
+    this.searchStateService.searchResults.set([]);
+    this.noResults.set(false);
     this.isSearching.set(true);
     const response = await fetch(`${API_ENDPOINT}/artists?q=${this.searchQuery()}`);
     const results = await response.json();
@@ -59,7 +62,7 @@ export class SearchFormComponent {
     }
 
     if (artists.length === 0) {
-      this.noResult.set(true);
+      this.noResults.set(true);
     }
     this.searchStateService.searchResults.set(artists);
     this.isSearching.set(false);
@@ -69,11 +72,11 @@ export class SearchFormComponent {
     this.searchStateService.clear.update(x => x + 1);
   }
 
-  constructor(private searchStateService : SearchStateService) {
+  constructor(private searchStateService : SearchStateService, private router : Router) {
     effect(()=> {
       const _clear = this.searchStateService.clear();
       this.searchQuery.set('');
-      this.noResult.set(false);
+      this.noResults.set(false);
     });
   } 
 }

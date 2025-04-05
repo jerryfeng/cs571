@@ -1,5 +1,5 @@
 export interface Artist {
 	title: string;
-	id: number;
+	id: string;
 	thumbnail: string;
 }

@@ -22,4 +22,17 @@
 	max-height: fit-content;
 }
 
+.white {
+	color: white;
+}
 
+.yellow {
+	color: rgb(238, 238, 0);
+}
+
+.circle {
+	width: 34px;
+	height: 34px;
+	border-radius: 17px;
+	background-color: #276c9a;
+}

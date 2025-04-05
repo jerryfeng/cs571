@@ -1,0 +1,49 @@
+.text-justify {
+	text-align: justify;
+}
+
+fa-icon {
+	cursor: pointer;
+}
+
+.card {
+	min-width: 208px;
+	img {
+		height: 206px;
+	}
+	max-height: fit-content;
+}
+
+.card:hover {
+	cursor: pointer;
+	.card-body {
+		background-color: #0e9eff;
+	}
+}
+
+.card.selected {
+	.card-body {
+		background-color: #0e9eff;
+	}
+}
+
+.card-body {
+	background-color: #205375;
+	color: white;
+	max-height: fit-content;
+}
+
+.white {
+	color: white;
+}
+
+.yellow {
+	color: rgb(238, 238, 0);
+}
+
+.circle {
+	width: 34px;
+	height: 34px;
+	border-radius: 17px;
+	background-color: #276c9a;
+}

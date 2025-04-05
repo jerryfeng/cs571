@@ -10,6 +10,8 @@ export class SearchStateService {
 
   searchResults = signal<Array<Artist>>([]);
 
+  selectedArtistId = signal<string>('');
+
   constructor() {
     effect(() =>{
       const _clear = this.clear();
@@ -17,7 +19,6 @@ export class SearchStateService {
     });
     effect(() => {
       const searchResults = this.searchResults();
-      console.log(searchResults);
-    })
+    });
   }
 }
