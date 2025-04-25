@@ -17,8 +17,5 @@ export class SearchStateService {
       const _clear = this.clear();
       this.searchResults.set([]);
     });
-    effect(() => {
-      const searchResults = this.searchResults();
-    });
   }
 }

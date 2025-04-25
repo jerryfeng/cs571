@@ -3,3 +3,8 @@
 		width: 12%;
 	}
 }
+.modal-body {
+	img {
+		aspect-ratio: 1;
+	}
+}

@@ -44,7 +44,6 @@ export class SearchFormComponent {
   noResults = signal<boolean>(false);
   async searchArtist(): Promise<void> {
     this.router.navigateByUrl('/');
-    this.searchStateService.searchResults.set([]);
     this.noResults.set(false);
     this.isSearching.set(true);
     const response = await fetch(`${API_ENDPOINT}/artists?q=${this.searchQuery()}`);

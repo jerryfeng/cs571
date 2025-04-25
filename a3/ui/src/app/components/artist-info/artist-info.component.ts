@@ -135,6 +135,7 @@ export class ArtistInfoComponent implements OnChanges {
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
+    this.similarArtists.set([]);
     await this.getArtistInfo();
     if (this.loginService.isLoggedIn()) {
       await this.getSimilarArtists();

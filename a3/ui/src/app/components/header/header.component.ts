@@ -29,6 +29,7 @@ import { API_ENDPOINT } from '../../app.constants';
                   </a>
                   <ul class="dropdown-menu dropdown-menu-lg-end position-absolute">
                     <li><a class="dropdown-item text-danger" (click)="loginService.deleteUser()">Delete account</a></li>
+                    <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" (click)="loginService.logout()">Log out</a></li>
                   </ul>
                 </div>

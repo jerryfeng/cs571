@@ -142,5 +142,10 @@ export const getFavorites = async (email) => {
 		userFavorites.push(doc);
 	}
 
-	return userFavorites;
+	const sorted = userFavorites.sort((a, b) => {
+		if (a.timestamp > b.timestamp) return -1;
+		else return 1;
+	});
+
+	return sorted;
 }

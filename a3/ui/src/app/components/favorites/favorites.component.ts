@@ -1,6 +1,7 @@
 import { Component, OnDestroy, signal } from '@angular/core';
 import { FavoritesService } from '../../services/favorites.service';
 import { Favorite } from '../../models/favorite';
+import { Router } from '@angular/router';
 
 const MISSING_IMAGE_REPLACEMENT_URL = '/public/artsy_logo.svg';
 
@@ -20,7 +21,7 @@ const MISSING_IMAGE_REPLACEMENT_URL = '/public/artsy_logo.svg';
       <div class="row row-cols-1 row-cols-lg-3 g-3 mb-5">
         @for (favorite of favoritesService.getFavorites(); track $index) {
           <div class="col">
-            <div class="card mb-1 text-start">
+            <div class="card mb-1 text-start" (click)="goToArtistDetail(favorite.artistId)">
               <div class="card-body card-background" [style.backgroundImage]="'url(' + getThumbnail(favorite) + ')'"></div>
               <div class="card-body p-3">
                 <h3>{{favorite.artistDetail.name}}</h3>
@@ -28,7 +29,7 @@ const MISSING_IMAGE_REPLACEMENT_URL = '/public/artsy_logo.svg';
                   {{favorite.artistDetail.birthYear}} - {{favorite.artistDetail.deathYear}}<br />
                   {{favorite.artistDetail.nationality}}
                 </p>
-                <u class="cart-text position-absolute bottom-0 end-0 me-2 mb-2" (click)="favoritesService.removeFavorite(favorite.artistId)">Remove</u>
+                <u class="cart-text position-absolute bottom-0 end-0 me-2 mb-2" (click)="removeFavorite($event, favorite.artistId)">Remove</u>
                 <p class="card-text position-absolute bottom-0 start-0 ms-2 mb-2">{{recencies().get(favorite.artistId)}}</p>
               </div>
             </div>
@@ -51,12 +52,21 @@ export class FavoritesComponent implements OnDestroy {
     this.recencies.set(recencies);
   }, 1000);
 
-  constructor(public favoritesService: FavoritesService) {
+  constructor(public favoritesService: FavoritesService, public router: Router) {
     let recencies = new Map<string, string>();
     this.favoritesService.getFavorites().forEach(favorite => {
       recencies.set(favorite.artistId, this.getRecency(favorite));
     });
     this.recencies.set(recencies);
+  }
+
+  goToArtistDetail(artistId: string): void {
+    this.router.navigateByUrl(`/artists/${artistId}/info`);
+  }
+
+  removeFavorite(event: MouseEvent, artistId: string): void {
+    event.stopPropagation();
+    this.favoritesService.removeFavorite(artistId);
   }
 
   getThumbnail(favorite: Favorite): string {
