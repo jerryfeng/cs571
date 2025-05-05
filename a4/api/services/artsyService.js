@@ -88,9 +88,18 @@ export const searchSimilarArtists = async (artistId) => {
 		throw new Error(`Response status ${response.status}`);
 	}
 
-	const results = await response.json();
+	const results = (await response.json())._embedded.artists;
+	
+	const artists = [];
+	results.forEach(result => {
+		artists.push({
+			id: result._links.self.href.split('/').pop(),
+			title: result.name,
+			thumbnail: result._links.thumbnail.href
+		});
+	});
 
-	return results._embedded.artists;
+	return artists;
 }
 
 export const getArtist = async (id) => {
@@ -127,8 +136,19 @@ export const searchArtworks = async (artist_id) => {
 		throw new Error(`Response status ${response.status}`);
 	}
 
-	const results = await response.json();
-	return results._embedded.artworks;
+	const results = (await response.json())._embedded.artworks;
+	
+	const artworks = [];
+	results.forEach(result => {
+		artworks.push({
+			id: result.id,
+			title: result.title,
+			year: result.date,
+			href: result._links.image.href.replace('{image_version}', 'large')
+		});
+	});
+
+	return artworks;
 };
 
 export const searchCategories = async (artwork_id) => {
@@ -144,6 +164,15 @@ export const searchCategories = async (artwork_id) => {
 		throw new Error(`Response status ${response.status}`);
 	}
 
-	const results = await response.json();
-	return results._embedded.genes;
+	const results = (await response.json())._embedded.genes;
+	const categories = [];
+	results.forEach(result => {
+		categories.push({
+			name: result.name,
+			description: result.description,
+			thumbnail: result._links.thumbnail.href
+		});
+	});
+
+	return categories;
 };

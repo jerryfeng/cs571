@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.artistsearch"
+    namespace = "com.jerryfeng.artistsearch"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.artistsearch"
+        applicationId = "com.jerryfeng.artistsearch"
         minSdk = 34
         targetSdk = 35
         versionCode = 1
@@ -45,6 +45,8 @@ dependencies {
     implementation(libs.retrofit)
 
     // Converter (for JSON parsing, usually Gson)
+    implementation(libs.androidx.browser)
+    implementation(libs.persistentcookiejar)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.logging.interceptor)

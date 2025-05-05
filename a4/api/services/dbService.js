@@ -20,7 +20,7 @@ const client = new MongoClient(CONNECTION_STRING, {
 });
 
 export class ExistingUserError extends Error {
-	message = 'User with this email already exists.';
+	message = 'Email already exists.';
 };
 
 export const createUser = async (registration) => {
@@ -82,7 +82,7 @@ export const getUser = async (credentials) => {
 }
 
 export class WrongCredentialsError extends Error {
-	message = 'Password or email is incorrect.';
+	message = 'Username or password is incorrect.';
 };
 
 export const deleteUser = async (email) => {
