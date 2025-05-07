@@ -1,5 +1,6 @@
 package com.jerryfeng.artistsearch
 
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Box
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -19,6 +22,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.carousel.HorizontalUncontainedCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
@@ -30,11 +34,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.launch
@@ -70,10 +82,10 @@ fun CategoriesDialog(
 
             Card(
                 colors = CardColors(
-                    containerColor = Color.White,
-                    contentColor = Color.Black,
-                    disabledContainerColor = Color.Black,
-                    disabledContentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface
                 )
             ) {
                 Text(
@@ -106,10 +118,10 @@ fun CategoriesDialog(
                             val category = categories[i]
                             Card(
                                 colors = CardColors(
-                                    containerColor = Color(0xFFEEEEEE),
-                                    contentColor = Color.Black,
-                                    disabledContainerColor = Color.Black,
-                                    disabledContentColor = Color(0xFFEEEEEE)
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                                    contentColor = MaterialTheme.colorScheme.onSurface,
+                                    disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                                    disabledContentColor = MaterialTheme.colorScheme.onSurface
                                 )
                             ) {
                                 Image(
@@ -130,12 +142,14 @@ fun CategoriesDialog(
                                     fontWeight = FontWeight.Medium
                                 )
                                 Text(
-                                    text = category.description,
+                                    text = buildMarkdownAnnotatedString(category.description),
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(250.dp)
-                                        .padding(horizontal = 12.dp),
-                                    fontSize = TextUnit(14f, TextUnitType.Sp)
+                                        .padding(horizontal = 12.dp)
+                                        .verticalScroll(rememberScrollState()),
+                                    fontSize = TextUnit(14f, TextUnitType.Sp),
+
                                 )
                             }
                         }
@@ -149,7 +163,8 @@ fun CategoriesDialog(
                             }) {
                             Icon(
                                 Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
                         IconButton(
@@ -161,7 +176,8 @@ fun CategoriesDialog(
                             }) {
                             Icon(
                                 Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -175,6 +191,46 @@ fun CategoriesDialog(
                     Text("Close")
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun buildMarkdownAnnotatedString(paragraph: String): AnnotatedString {
+    val context = LocalContext.current
+    return buildAnnotatedString {
+        val regex = Regex("""\[(.+?)]\((.+?)\)""")
+        var currentIndex = 0
+
+        for (match in regex.findAll(paragraph)) {
+            val matchStart = match.range.first
+            val matchEnd = match.range.last + 1
+            val linkText = match.groupValues[1]
+            val url = match.groupValues[2]
+
+            if (currentIndex < matchStart) {
+                append(paragraph.substring(currentIndex, matchStart))
+            }
+
+            withLink(
+                link = LinkAnnotation.Url(
+                    url = "https://www.artsy.net${url}",
+                    styles = TextLinkStyles(style = SpanStyle(color = Color(0xFF0041C2)))
+                ) {
+                    CustomTabsIntent.Builder().build().launchUrl(
+                        context,
+                        "https://www.artsy.net${url}".toUri()
+                    )
+                }
+            ) {
+                append(linkText)
+            }
+
+            currentIndex = matchEnd
+        }
+
+        if (currentIndex < paragraph.length) {
+            append(paragraph.substring(currentIndex))
         }
     }
 }

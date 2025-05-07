@@ -50,9 +50,9 @@ fun SimilarArtistsTab(
             Card(
                 colors = CardColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = Color.Black,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                     disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                    disabledContentColor = Color.Black
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface
                 ),
                 modifier = Modifier
                     .fillMaxWidth()

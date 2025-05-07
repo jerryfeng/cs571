@@ -16,6 +16,9 @@ class SearchViewModel : ViewModel() {
     private val _query = MutableStateFlow("")
     val query: StateFlow<String> = _query
 
+    private val _noResults = MutableStateFlow(false)
+    val noResults: StateFlow<Boolean> = _noResults
+
     fun onQueryChanged(newQuery: String) {
         _query.value = newQuery
     }
@@ -37,7 +40,9 @@ class SearchViewModel : ViewModel() {
 
     private suspend fun searchArtists(q: String) {
         try {
+            _noResults.value = false
             _data.value = RetrofitClient.apiService.searchArtists(q)
+            if (_data.value.isEmpty()) _noResults.value = true
         } catch (e: Exception) {
             e.printStackTrace()
         }

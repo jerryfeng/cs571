@@ -41,8 +41,8 @@ fun RegisterScreen(navController: NavController, credentialsViewModel: Credentia
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
                 navigationIconContentColor = MaterialTheme.colorScheme.primary,
-                titleContentColor = Color.Black,
-                actionIconContentColor = Color.Gray
+                titleContentColor = MaterialTheme.colorScheme.onSurface,
+                actionIconContentColor = MaterialTheme.colorScheme.onSurface
             ),
             title = {
                 Row {

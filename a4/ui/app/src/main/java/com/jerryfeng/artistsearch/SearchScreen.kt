@@ -18,6 +18,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -28,6 +32,7 @@ import androidx.navigation.NavController
 fun SearchScreen (navController: NavController, searchViewModel: SearchViewModel = viewModel()) {
     val artists by searchViewModel.data.collectAsState()
     val query by searchViewModel.query.collectAsState()
+    val noResults by searchViewModel.noResults.collectAsState()
 
     Column {
         SearchBar(
@@ -57,6 +62,7 @@ fun SearchScreen (navController: NavController, searchViewModel: SearchViewModel
                             contentDescription = null,
                             modifier = Modifier.clickable {
                                 searchViewModel.onQueryChanged("")
+                                navController.navigate("main")
                             }
                         )
                     }
@@ -67,6 +73,29 @@ fun SearchScreen (navController: NavController, searchViewModel: SearchViewModel
 
         ) { }
 
-        ArtistsList(navController, artists)
+        if (noResults) {
+            Card(
+                colors = CardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .padding(top = 16.dp)
+            ) {
+                Text(
+                    text="No Result Found",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
+        } else {
+            ArtistsList(navController, artists)
+        }
     }
 }

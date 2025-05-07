@@ -1,11 +1,13 @@
 package com.jerryfeng.artistsearch
 
+import androidx.compose.material3.Snackbar
 import androidx.compose.ui.focus.FocusState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import retrofit2.HttpException
 import com.google.gson.Gson
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -132,6 +134,7 @@ class CredentialsViewModel: ViewModel() {
                         password = _password.value
                     ))
                     LoginService.setUser(user)
+                    SnackbarManager.showMessage("Logged in successfully")
                     navController.navigate("main")
                 }
             } catch (e: HttpException) {

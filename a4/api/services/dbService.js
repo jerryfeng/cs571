@@ -103,10 +103,9 @@ export const addFavorite = async (email, artistId) => {
 	const artist = await getArtist(artistId);
 	const artistDetail = {
 		name: artist.name,
-		birthYear: artist.birthday,
-		deathYear: artist.deathday,
+		birthYear: artist.birthYear,
+		deathYear: artist.deathYear,
 		nationality: artist.nationality,
-		thumbnail: artist._links?.thumbnail?.href ?? null
 	};
 
 	const db =  client.db('a3');

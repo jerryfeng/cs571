@@ -14,6 +14,8 @@ import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import retrofit2.http.DELETE
+import retrofit2.http.HTTP
+import java.lang.reflect.Method
 
 
 private const val BASE_URL =
@@ -89,5 +91,14 @@ interface ApiService {
 
     @DELETE("me")
     suspend fun deleteUser()
+
+    @GET("favorites")
+    suspend fun getFavorites(): List<Favorite>
+
+    @POST("favorites")
+    suspend fun addFavorite(@Body artistId: ArtistId)
+
+    @HTTP(method = "DELETE", path = "favorites", hasBody = true)
+    suspend fun deleteFavorite(@Body artistId: ArtistId)
 
 }

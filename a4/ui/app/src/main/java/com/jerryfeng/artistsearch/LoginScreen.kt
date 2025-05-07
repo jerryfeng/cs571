@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,8 +40,8 @@ fun LoginScreen(navController: NavController, credentialsViewModel: CredentialsV
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
                 navigationIconContentColor = MaterialTheme.colorScheme.primary,
-                titleContentColor = Color.Black,
-                actionIconContentColor = Color.Gray
+                titleContentColor = MaterialTheme.colorScheme.onSurface,
+                actionIconContentColor = MaterialTheme.colorScheme.onSurface
             ),
             title = {
                 Row {
@@ -103,15 +104,21 @@ fun LoginScreen(navController: NavController, credentialsViewModel: CredentialsV
                     },
                     isError = passwordSupportingText.isNotEmpty()
                 )
+                val isLoading by credentialsViewModel.isLoading.collectAsState()
                 Button(
                     onClick = {
                         credentialsViewModel.login(navController)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
+                        .padding(horizontal = 16.dp),
+                    enabled = !isLoading
                 ) {
-                    Text("Login")
+                    if (isLoading) {
+                        CircularProgressIndicator()
+                    } else {
+                        Text("Login")
+                    }
                 }
                 val message by credentialsViewModel.message.collectAsState()
                 if (message.isNotEmpty()) {

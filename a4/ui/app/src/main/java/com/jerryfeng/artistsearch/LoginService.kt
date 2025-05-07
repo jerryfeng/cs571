@@ -4,14 +4,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 object LoginService {
     private val _user = mutableStateOf(User("","",""))
     val isLoggedIn by derivedStateOf { _user.value.email.isNotEmpty() }
     val user : State<User> = _user
-    fun setUser(user: User) {
-        _user.value = user
-    }
+    val loginEvent = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
 
     suspend fun loginFromCookie() {
         try {
@@ -21,10 +20,16 @@ object LoginService {
         }
     }
 
+    suspend fun setUser(user: User) {
+        _user.value = user
+        loginEvent.emit(Unit)
+    }
+
     suspend fun logout() {
         try {
             RetrofitClient.apiService.logout()
             setUser(User("","",""))
+            SnackbarManager.showMessage("Logged out successfully")
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -34,6 +39,7 @@ object LoginService {
         try {
             RetrofitClient.apiService.deleteUser()
             setUser(User("","",""))
+            SnackbarManager.showMessage("Deleted user successfully")
         } catch (e: Exception) {
             e.printStackTrace()
         }
